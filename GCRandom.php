@@ -2,10 +2,6 @@
 
 namespace GCRandom;
 
-/**
- * Random
- */
-
 define('GC_RAND_MAX',   0x7fffffff);
 						
 class GCRandom
@@ -18,14 +14,45 @@ class GCRandom
 		"S"         => 0,
 	);
 
+
+	/**
+     * Set Random Seed
+     *
+     * @param int    $seed
+     * @return int
+     */
 	public function setSeed($seed) {
 		$this->seed = $seed;
 	}
 
+
+	/**
+     * Get Random Seed
+     *
+     * @return int
+     */
 	public function getSeed() {
 		return $this->seed;
 	}
 
+
+	/**
+     * Get Maximum Random Number
+     *
+     * @return int
+     */
+	public function getRandMax() {
+		return GC_RAND_MAX;
+	}
+
+
+	/**
+     * Get Random integer
+     *
+     * @param int    $_min
+     * @param int 	 $_max
+     * @return int
+     */
 	public function rand($_min = 0, $_max = GC_RAND_MAX) {
 		$this->seed = ($this->seed * 1103515245 + 12345) & GC_RAND_MAX;
 		$number = (($this->seed >> 1) & GC_RAND_MAX);
@@ -38,10 +65,15 @@ class GCRandom
 		return $number;
 	}
 
-	public function getRandMax(){
-		return GC_RAND_MAX;
-	}
 
+	/**
+     * Get Random float
+     *
+     * @param float    $_min
+     * @param float	   $_max
+     * @param int	   $round
+     * @return int
+     */
 	public function randFloat($_min = 0, $_max = 1, $round = -1) {
 		$randomfloat = $this->rand();
 		$Min = 0;
@@ -58,6 +90,14 @@ class GCRandom
 		return $randomfloat;
 	}
 
+
+	/**
+     * Get Gaussian Random Float
+     *
+     * @param float    $dev
+     * @param int      $round
+     * @return float
+     */
 	public function randGauss($dev = 1.0, $round = -1) {
 		$X = 0;
 	   
@@ -83,6 +123,14 @@ class GCRandom
 		return $number;
 	}
 
+
+	/**
+     * Get User Profile Info
+     *
+     * @param int    $id
+     * @param string $fields
+     * @return UserProfile
+     */
 	public function randWeight($Ary) {
 		$totalWeight = 0;
 		foreach ($Ary as $key => $value) {
@@ -98,7 +146,12 @@ class GCRandom
 	}
 
 
-	//-----------------------------------------------------------
+	/**
+     * Get Random key from array
+     *
+     * @param array    $Ary
+     * @return int
+     */
 	public function randArray($Ary) {
 		if (count($Ary) > 1)
 			$key = $this->rand(0, count($Ary) - 1);
@@ -107,16 +160,21 @@ class GCRandom
 		return $key;
 	}
 
-	public function shuffleArray($my_array = array()) {
+
+	/**
+     * Shuffle array item
+     *
+     * @param array    $Ary
+     * @return array
+     */
+	public function shuffleArray($Ary = array()) {
 		$copy = array();
 
-		while (count($my_array)) {
-			$key = $this->randArray($my_array);
-			
-			$copy[] = $my_array[$key];
-
-			unset($my_array[$key]);
-			$my_array = array_values($my_array);
+		while (count($Ary)) {
+			$key = $this->randArray($Ary);
+			$copy[] = $Ary[$key];
+			unset($Ary[$key]);
+			$Ary = array_values($Ary);
 		}
 		return $copy;
 	}
